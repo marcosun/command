@@ -7,7 +7,7 @@
 import {all} from 'redux-saga/effects';
 
 import formActionSaga from 'redux-form-saga';
-// import speed from './Speed/saga';
+import speed from './Speed/saga';
 
 /**
  * [*rootSaga description]
@@ -16,6 +16,6 @@ import formActionSaga from 'redux-form-saga';
 export default function* rootSaga() {
   yield all([
     formActionSaga(),
-    // speed(),
+    speed(),
   ]);
 }

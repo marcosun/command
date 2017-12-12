@@ -6,12 +6,14 @@
  * @requires material-ui
  * @requires echarts-for-react
  * @requires react-amap
+ * @requires react-amap-plugin-heatmap
  */
 import React from 'react';
-import {object} from 'prop-types';
+import {object, func, string, number, shape, arrayOf} from 'prop-types';
 import {withStyles} from 'material-ui/styles';
-// import ReactEcharts from 'echarts-for-react';
+import ReactEcharts from 'echarts-for-react';
 import {Map as ReactAMap} from 'react-amap';
+import Heatmap from 'react-amap-plugin-heatmap';
 
 const styles = (theme) => ({
   root: {
@@ -40,7 +42,45 @@ class Component extends React.Component {
    */
   static propTypes = {
     classes: object.isRequired,
+    cityCode: string.isRequired,
+    heatmapDataSet: arrayOf(shape({
+      lng: number,
+      lat: number,
+      avgSpeed: number,
+    })),
+    fetchAllLocationsSpeedRequest: func.isRequired,
   };
+
+  /**
+   * Constructor
+   * @param  {Object} props
+   */
+  constructor(props) {
+    super(props);
+    this.props = props;
+
+    this.AMapOptions = { // AMap init options
+      amapkey: 'dfba0f951c70f029a888263a3e931d0a',
+      mapStyle: 'amap://styles/47cf2cc474c7ad6c92072f0b267adff0?isPublic=true',
+      features: ['bg', 'road'],
+      showIndoorMap: false,
+      events: {
+        created: (ins) => { // Save amap instance
+          this.AMapInstance = ins;
+        },
+        zoomend: this.zoomEndHandler.bind(this),
+      },
+    };
+
+    // Call saga to fetch api
+    this.props.fetchAllLocationsSpeedRequest({
+      cityCode: this.props.cityCode,
+    });
+  }
+
+  zoomEndHandler() {
+    this.amapRadius = this.AMapInstance.getZoom();
+  }
 
   /**
    * Return react tree of Speed page
@@ -51,10 +91,22 @@ class Component extends React.Component {
       classes,
     } = this.props;
 
+    this.heatmapOptions = {
+      radius: this.amapRadius,
+      dataSet: {
+        data: this.props.heatmapDataSet,
+        max: 100,
+      },
+    };
+
     return (
       <div className={classes.root}>
         <div className={classes.mapContainer}>
-          <ReactAMap amapkey='dfba0f951c70f029a888263a3e931d0a' />
+          <ReactAMap
+            {...this.AMapOptions}
+          >
+            <Heatmap {...this.heatmapOptions} />
+          </ReactAMap>
         </div>
       </div>
     );

@@ -3,16 +3,13 @@
  * @module App/Reducer
  * @requires redux
  * @requires react-router-redux
- * @requires {@link module:Home}
- * @requires {@link module:Login}
+ * @requires {@link module:Speed}
  */
 import {combineReducers} from 'redux';
 import {routerReducer as router} from 'react-router-redux';
 import {reducer as formReducer} from 'redux-form';
 
-import auth from './Auth/reducer';
-import home from './Home/reducer';
-import login from './Login/reducer';
+import speed from './Speed/reducer';
 
 /**
  * Return root reducer
@@ -21,7 +18,5 @@ import login from './Login/reducer';
 export default combineReducers({
   router,
   form: formReducer,
-  auth,
-  login,
-  home,
+  speed,
 });

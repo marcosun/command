@@ -1,4 +1,4 @@
 /**
  * This module exports Action Creators
- * @module Home/Actions
+ * @module Speed/Actions
  */

@@ -1,8 +1,8 @@
 /**
- * Home Container Module
- * @module Home/Container
+ * Speed Container Module
+ * @module Speed/Container
  * @requires react-redux
- * @requires {@link module:Home/Component}
+ * @requires {@link module:Speed/Component}
  */
 import {connect} from 'react-redux';
 
@@ -29,6 +29,6 @@ class Container extends Component {
 }
 
 /**
- * Return redux connected Home page
+ * Return redux connected Speed page
  */
 export default Container;

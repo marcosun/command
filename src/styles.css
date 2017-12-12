@@ -43,11 +43,3 @@
   /* Support for IE. */
   font-feature-settings: 'liga';
 }
-
-/**
- * Consider to create a standalone UI project for the following styling
- */
-:global
-  .row
-    display: flex
-    flex-direction: row

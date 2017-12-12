@@ -4,18 +4,14 @@
  * @requires react
  * @requires react-router-dom
  * @requires loadable-components
- * @requires {@link module:Home}
- * @requires {@link module:Login}
+ * @requires {@link module:Speed}
  */
 import React from 'react';
-import {Route} from 'react-router-dom';
+import {Route, Redirect} from 'react-router-dom';
 import loadable from 'loadable-components';
 
 // Require Pages
-// import {Container as Home} from './Home';
-// import {Container as Login} from './Login';
-const Home = loadable(() => import('./Home/container'));
-const Login = loadable(() => import('./Login/container'));
+const Speed = loadable(() => import('./Speed/container'));
 
 /**
  * @return {Router}
@@ -23,8 +19,10 @@ const Login = loadable(() => import('./Login/container'));
 export default function Router() {
   return (
     <div>
-      <Route exact path="/index" component={Home} />
-      <Route exact path="/login" component={Login} />
+      <Route exact path="/" render={() => (
+        <Redirect to="/speed"/>
+      )} />
+      <Route exact path="/speed" component={Speed} />
     </div>
   );
 }

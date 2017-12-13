@@ -6,16 +6,17 @@
  * @requires material-ui
  * @requires react-amap
  * @requires react-amap-plugin-heatmap
- * @requires moment
+ * @requires {@link module:Speed/Components/Echarts}
+ * @requires {@link module:Speed/Components/SpeedBoard}
  */
 import React from 'react';
 import {object, func, string, number, shape, arrayOf} from 'prop-types';
 import {withStyles} from 'material-ui/styles';
 import {Map as ReactAMap} from 'react-amap';
 import Heatmap from 'react-amap-plugin-heatmap';
-import moment from 'moment';
 
 import Echarts from './components/echarts';
+import SpeedBoard from './components/speedBoard';
 
 const styles = (theme) => ({
   root: {
@@ -33,35 +34,6 @@ const styles = (theme) => ({
     bottom: '300px',
     color: 'white',
     textAlign: 'right',
-  },
-  peakSpeedTitle: {
-    marginBottom: '10px',
-    color: 'white',
-    fontSize: '22px',
-    fontWeight: '900',
-  },
-  dayAvgSpeedTitle: {
-    marginTop: '60px',
-    marginBottom: '10px',
-    color: 'white',
-    fontSize: '25px',
-    fontWeight: '900',
-  },
-  peakSpeedValue: {
-    marginRight: '10px',
-    color: '#ffa600',
-    fontSize: '40px',
-    fontWeight: '900',
-  },
-  dayAvgSpeedValue: {
-    marginRight: '10px',
-    color: '#13d5e8',
-    fontSize: '50px',
-    fontWeight: '900',
-  },
-  speedUnit: {
-    color: '#888',
-    fontSize: '20px',
   },
   echarts: {
     position: 'absolute',
@@ -168,21 +140,9 @@ class Component extends React.Component {
           </ReactAMap>
         </div>
         <div className={classes.statisticsBoard}>
-          <h5 className={classes.peakSpeedTitle}>早高峰运送速度</h5>
-          <div>
-            <span className={classes.peakSpeedValue}>{morningPeakSpeed}</span>
-            <span className={classes.speedUnit}>km/h</span>
-          </div>
-          <h5 className={classes.peakSpeedTitle}>晚高峰运送速度</h5>
-          <div>
-            <span className={classes.peakSpeedValue}>{eveningPeakSpeed}</span>
-            <span className={classes.speedUnit}>km/h</span>
-          </div>
-          <h5 className={classes.dayAvgSpeedTitle}>当前平均运送速度</h5>
-          <div>
-            <span className={classes.dayAvgSpeedValue}>{dayAvgSpeed}</span>
-            <span className={classes.speedUnit}>km/h</span>
-          </div>
+          <SpeedBoard title='早高峰运送速度' value={morningPeakSpeed} />
+          <SpeedBoard title='晚高峰运送速度' value={eveningPeakSpeed} />
+          <SpeedBoard title='当前平均运送速度' value={dayAvgSpeed} color='#13d5e8' />
         </div>
         <div className={classes.echarts}>
           <Echarts speedTrend={speedTrend} />

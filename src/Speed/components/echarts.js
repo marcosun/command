@@ -1,6 +1,6 @@
 /**
  * Speed Component Module
- * @module Speed/Component/Echarts
+ * @module Speed/Components/Echarts
  * @requires react
  * @requires prop-types
  * @requires material-ui

@@ -5,7 +5,7 @@
  * @requires axios
  * @requires {@link module:Speed/ActionTypes}
  */
-import {put, takeEvery} from 'redux-saga/effects';
+import {put, takeEvery, all} from 'redux-saga/effects';
 import axios from 'axios';
 
 import {
@@ -80,7 +80,7 @@ export function* fetchAllStatisticsRequest({payload: {cityCode}}) {
       axios(fetchFrom('getNowAvgSpeed')),
       axios(fetchFrom('getTodayAvgSpeeds')),
     ]);
-    
+
     // Response success and failure check must be replace by http status code
     if (response.find((response) => {
       return response.data.message !== 'success';

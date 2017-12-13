@@ -8,12 +8,15 @@
 import {connect} from 'react-redux';
 
 import Component from './component';
-import {fetchAllLocationsSpeedRequest} from './actions';
+import {
+  fetchAllLocationsSpeedRequest,
+  zoomEnd,
+} from './actions';
 
 const mapStateToProps = (state, ownProps) => {
   return {
     cityCode: state.app.cityCode,
-    heatmapDataSet: state.speed.heatmapDataSet,
+    heatmapOptions: state.speed.heatmap,
   };
 };
 
@@ -21,6 +24,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     fetchAllLocationsSpeedRequest: (payload) => {
       dispatch(fetchAllLocationsSpeedRequest(payload));
+    },
+    zoomEndHandler: (payload) => {
+      dispatch(zoomEnd(payload));
     },
   };
 };

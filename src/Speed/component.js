@@ -25,6 +25,40 @@ const styles = (theme) => ({
     width: '100vw',
     height: '100vh',
   },
+  statisticsBoard: {
+    position: 'absolute',
+    top: '200px',
+    right: '100px',
+    color: 'white',
+    textAlign: 'right',
+  },
+  peakSpeedTitle: {
+    marginBottom: '0',
+    color: 'white',
+    fontSize: '22px',
+    fontWeight: '900',
+  },
+  avgSpeedTitle: {
+    marginTop: '60px',
+    marginBottom: '0',
+    color: 'white',
+    fontSize: '25px',
+    fontWeight: '900',
+  },
+  peakSpeedValue: {
+    color: '#ffa600',
+    fontSize: '40px',
+    fontWeight: '900',
+  },
+  avgSpeedValue: {
+    color: '#13d5e8',
+    fontSize: '50px',
+    fontWeight: '900',
+  },
+  speedUnit: {
+    color: '#888',
+    fontSize: '20px',
+  },
 });
 
 /**
@@ -43,12 +77,9 @@ class Component extends React.Component {
   static propTypes = {
     classes: object.isRequired,
     cityCode: string.isRequired,
-    heatmapDataSet: arrayOf(shape({
-      lng: number,
-      lat: number,
-      avgSpeed: number,
-    })),
+    heatmapOptions: object.isRequired,
     fetchAllLocationsSpeedRequest: func.isRequired,
+    zoomEndHandler: func.isRequired,
   };
 
   /**
@@ -62,6 +93,9 @@ class Component extends React.Component {
     this.AMapOptions = { // AMap init options
       amapkey: 'dfba0f951c70f029a888263a3e931d0a',
       mapStyle: 'amap://styles/47cf2cc474c7ad6c92072f0b267adff0?isPublic=true',
+      center: [120.182217, 30.25316],
+      zoom: 13,
+      zooms: [3, 16],
       features: ['bg', 'road'],
       showIndoorMap: false,
       events: {
@@ -72,14 +106,18 @@ class Component extends React.Component {
       },
     };
 
-    // Call saga to fetch api
+    // Call saga to fetch heat map data api
     this.props.fetchAllLocationsSpeedRequest({
       cityCode: this.props.cityCode,
     });
   }
 
+  /**
+   * Fire redux action to update heat map radius and data-max value
+   */
   zoomEndHandler() {
-    this.amapRadius = this.AMapInstance.getZoom();
+    const zoom = this.AMapInstance.getZoom();
+    this.props.zoomEndHandler({zoom});
   }
 
   /**
@@ -89,15 +127,8 @@ class Component extends React.Component {
   render() {
     const {
       classes,
+      heatmapOptions,
     } = this.props;
-
-    this.heatmapOptions = {
-      radius: this.amapRadius,
-      dataSet: {
-        data: this.props.heatmapDataSet,
-        max: 100,
-      },
-    };
 
     return (
       <div className={classes.root}>
@@ -105,8 +136,25 @@ class Component extends React.Component {
           <ReactAMap
             {...this.AMapOptions}
           >
-            <Heatmap {...this.heatmapOptions} />
+            <Heatmap {...heatmapOptions} />
           </ReactAMap>
+        </div>
+        <div className={classes.statisticsBoard}>
+          <h5 className={classes.peakSpeedTitle}>早高峰运送速度</h5>
+          <div>
+            <span className={classes.peakSpeedValue}></span>
+            <span className={classes.speedUnit}>km/h</span>
+          </div>
+          <h5 className={classes.peakSpeedTitle}>晚高峰运送速度</h5>
+          <div>
+            <span className={classes.peakSpeedValue}></span>
+            <span className={classes.speedUnit}>km/h</span>
+          </div>
+          <h5 className={classes.avgSpeedTitle}>当前平均运送速度</h5>
+          <div>
+            <span className={classes.avgSpeedValue}></span>
+            <span className={classes.speedUnit}>km/h</span>
+          </div>
         </div>
       </div>
     );

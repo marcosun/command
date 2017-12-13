@@ -7,6 +7,7 @@ import {
   FETCH_ALL_LOCATIONS_SPEED_REQUEST,
   FETCH_ALL_LOCATIONS_SPEED_SUCCEED,
   FETCH_ALL_LOCATIONS_SPEED_FAILURE,
+  ZOOM_END,
 } from './actionTypes';
 
 /**
@@ -39,6 +40,15 @@ export const fetchAllLocationsSpeedFailure = ({name, details, message}) => (
       name,
       details,
       message,
+    },
+  }
+);
+
+export const zoomEnd = ({zoom}) => (
+  {
+    type: ZOOM_END,
+    payload: {
+      zoom,
     },
   }
 );

@@ -30,7 +30,7 @@ const styles = (theme) => ({
   statisticsBoard: {
     position: 'absolute',
     right: '100px',
-    bottom: 0,
+    bottom: '300px',
     color: 'white',
     textAlign: 'right',
   },
@@ -62,6 +62,13 @@ const styles = (theme) => ({
   speedUnit: {
     color: '#888',
     fontSize: '20px',
+  },
+  statisticsEcharts: {
+    position: 'absolute',
+    right: '100px',
+    bottom: 0,
+    color: 'white',
+    textAlign: 'right',
   },
   echarts: {
     width: '450px',
@@ -267,9 +274,9 @@ class Component extends React.Component {
             <span className={classes.dayAvgSpeedValue}>{dayAvgSpeed}</span>
             <span className={classes.speedUnit}>km/h</span>
           </div>
-          <div>
-            <ReactEcharts className={classes.echarts} option={echartsOptions} />
-          </div>
+        </div>
+        <div className={classes.statisticsEcharts}>
+          <ReactEcharts className={classes.echarts} option={echartsOptions} />
         </div>
       </div>
     );

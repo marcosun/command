@@ -4,7 +4,6 @@
  * @requires react
  * @requires prop-types
  * @requires material-ui
- * @requires echarts-for-react
  * @requires react-amap
  * @requires react-amap-plugin-heatmap
  * @requires moment
@@ -12,10 +11,11 @@
 import React from 'react';
 import {object, func, string, number, shape, arrayOf} from 'prop-types';
 import {withStyles} from 'material-ui/styles';
-import ReactEcharts from 'echarts-for-react';
 import {Map as ReactAMap} from 'react-amap';
 import Heatmap from 'react-amap-plugin-heatmap';
 import moment from 'moment';
+
+import Echarts from './components/echarts';
 
 const styles = (theme) => ({
   root: {
@@ -63,16 +63,12 @@ const styles = (theme) => ({
     color: '#888',
     fontSize: '20px',
   },
-  statisticsEcharts: {
+  echarts: {
     position: 'absolute',
     right: '100px',
     bottom: 0,
-    color: 'white',
-    textAlign: 'right',
-  },
-  echarts: {
     width: '450px',
-    height: '250px',
+    height: '300px',
   },
 });
 
@@ -118,7 +114,7 @@ class Component extends React.Component {
       mapStyle: 'amap://styles/47cf2cc474c7ad6c92072f0b267adff0?isPublic=true',
       center: [120.182217, 30.25316],
       zoom: 13,
-      zooms: [3, 16],
+      zooms: [10, 16],
       features: ['bg', 'road'],
       showIndoorMap: false,
       events: {
@@ -162,93 +158,6 @@ class Component extends React.Component {
       speedTrend,
     } = this.props;
 
-    const echartsOptions = {
-      title: {
-        show: false,
-      },
-      legend: {
-        show: false,
-      },
-      grid: {
-        right: 0,
-      },
-      xAxis: {
-        type: 'category',
-        axisLine: {
-          lineStyle: {
-            color: 'gray',
-            width: 2,
-          },
-        },
-        axisLabel: {
-          color: 'lightgray',
-        },
-        axisTick: {
-          alignWithLabel: true,
-          inside: true,
-          lineStyle: {
-            color: 'gray',
-            width: 2,
-          },
-        },
-        data: speedTrend.map((trend) => {
-          return moment(trend.time).format('H:mm');
-        }),
-      },
-      yAxis: {
-        type: 'value',
-        axisLine: {
-          show: false,
-        },
-        axisTick: {
-          show: false,
-        },
-        axisLabel: {
-          color: 'lightgray',
-        },
-        splitLine: {
-          lineStyle: {
-            color: 'gray',
-          },
-        },
-        splitArea: {
-          show: true,
-          areaStyle: {
-            color: 'darkgray',
-            opacity: 0.1,
-          },
-        },
-      },
-      tooltip: {
-        show: false,
-      },
-      series: [{
-        // name: '速度',
-        type: 'line',
-        showSymbol: false,
-        lineStyle: {
-          normal: {
-            color: {
-              type: 'linear',
-              x: 0,
-              y: 0,
-              x2: 0,
-              y2: 1,
-              colorStops: [{
-                offset: 0, color: 'orange', // 0% 处的颜色
-              }, {
-                offset: 1, color: '#13d5e8', // 100% 处的颜色
-              }],
-              globalCoord: false,
-            },
-          },
-        },
-        data: speedTrend.map((trend) => {
-            return trend.speed;
-          }),
-        }],
-    };
-
     return (
       <div className={classes.root}>
         <div className={classes.mapContainer}>
@@ -275,8 +184,8 @@ class Component extends React.Component {
             <span className={classes.speedUnit}>km/h</span>
           </div>
         </div>
-        <div className={classes.statisticsEcharts}>
-          <ReactEcharts className={classes.echarts} option={echartsOptions} />
+        <div className={classes.echarts}>
+          <Echarts speedTrend={speedTrend} />
         </div>
       </div>
     );

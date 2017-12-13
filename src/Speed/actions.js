@@ -8,6 +8,9 @@ import {
   FETCH_ALL_LOCATIONS_SPEED_SUCCEED,
   FETCH_ALL_LOCATIONS_SPEED_FAILURE,
   ZOOM_END,
+  FETCH_ALL_STATISTICS_REQUEST,
+  FETCH_ALL_STATISTICS_SUCCEED,
+  FETCH_ALL_STATISTICS_FAILURE,
 } from './actionTypes';
 
 /**
@@ -49,6 +52,35 @@ export const zoomEnd = ({zoom}) => (
     type: ZOOM_END,
     payload: {
       zoom,
+    },
+  }
+);
+
+export const fetchAllStatisticsRequest = ({cityCode}) => (
+  {
+    type: FETCH_ALL_STATISTICS_REQUEST,
+    payload: {
+      cityCode,
+    },
+  }
+);
+
+export const fetchAllStatisticsSucceed = (response) => (
+  {
+    type: FETCH_ALL_STATISTICS_SUCCEED,
+    payload: {
+      ...response,
+    },
+  }
+);
+
+export const fetchAllStatisticsFailure = ({name, details, message}) => (
+  {
+    type: FETCH_ALL_STATISTICS_FAILURE,
+    payload: {
+      name,
+      details,
+      message,
     },
   }
 );

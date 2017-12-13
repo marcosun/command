@@ -33,24 +33,26 @@ const styles = (theme) => ({
     textAlign: 'right',
   },
   peakSpeedTitle: {
-    marginBottom: '0',
+    marginBottom: '10px',
     color: 'white',
     fontSize: '22px',
     fontWeight: '900',
   },
-  avgSpeedTitle: {
+  dayAvgSpeedTitle: {
     marginTop: '60px',
-    marginBottom: '0',
+    marginBottom: '10px',
     color: 'white',
     fontSize: '25px',
     fontWeight: '900',
   },
   peakSpeedValue: {
+    marginRight: '10px',
     color: '#ffa600',
     fontSize: '40px',
     fontWeight: '900',
   },
-  avgSpeedValue: {
+  dayAvgSpeedValue: {
+    marginRight: '10px',
     color: '#13d5e8',
     fontSize: '50px',
     fontWeight: '900',
@@ -78,8 +80,16 @@ class Component extends React.Component {
     classes: object.isRequired,
     cityCode: string.isRequired,
     heatmapOptions: object.isRequired,
+    morningPeakSpeed: number.isRequired,
+    eveningPeakSpeed: number.isRequired,
+    dayAvgSpeed: number.isRequired,
+    speedTrend: arrayOf(shape({
+      time: number,
+      speed: number,
+    })),
     fetchAllLocationsSpeedRequest: func.isRequired,
     zoomEndHandler: func.isRequired,
+    fetchAllStatisticsRequest: func.isRequired,
   };
 
   /**
@@ -110,6 +120,11 @@ class Component extends React.Component {
     this.props.fetchAllLocationsSpeedRequest({
       cityCode: this.props.cityCode,
     });
+
+    // Call saga to fetch statistics api
+    this.props.fetchAllStatisticsRequest({
+      cityCode: this.props.cityCode,
+    });
   }
 
   /**
@@ -128,6 +143,9 @@ class Component extends React.Component {
     const {
       classes,
       heatmapOptions,
+      morningPeakSpeed,
+      eveningPeakSpeed,
+      dayAvgSpeed,
     } = this.props;
 
     return (
@@ -142,17 +160,17 @@ class Component extends React.Component {
         <div className={classes.statisticsBoard}>
           <h5 className={classes.peakSpeedTitle}>早高峰运送速度</h5>
           <div>
-            <span className={classes.peakSpeedValue}></span>
+            <span className={classes.peakSpeedValue}>{morningPeakSpeed}</span>
             <span className={classes.speedUnit}>km/h</span>
           </div>
           <h5 className={classes.peakSpeedTitle}>晚高峰运送速度</h5>
           <div>
-            <span className={classes.peakSpeedValue}></span>
+            <span className={classes.peakSpeedValue}>{eveningPeakSpeed}</span>
             <span className={classes.speedUnit}>km/h</span>
           </div>
-          <h5 className={classes.avgSpeedTitle}>当前平均运送速度</h5>
+          <h5 className={classes.dayAvgSpeedTitle}>当前平均运送速度</h5>
           <div>
-            <span className={classes.avgSpeedValue}></span>
+            <span className={classes.dayAvgSpeedValue}>{dayAvgSpeed}</span>
             <span className={classes.speedUnit}>km/h</span>
           </div>
         </div>

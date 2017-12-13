@@ -8,6 +8,9 @@ import {
   FETCH_ALL_LOCATIONS_SPEED_SUCCEED,
   FETCH_ALL_LOCATIONS_SPEED_FAILURE,
   ZOOM_END,
+  FETCH_ALL_STATISTICS_REQUEST,
+  FETCH_ALL_STATISTICS_SUCCEED,
+  FETCH_ALL_STATISTICS_FAILURE,
 } from './actionTypes';
 
 /**
@@ -20,7 +23,6 @@ const initialState = {
       data: [],
       max: 15,
     },
-    isLoading: false,
     gradient: {
       0.25: 'rgb(0,0,255)',
       0.45: 'rgb(1,255,255)',
@@ -30,6 +32,14 @@ const initialState = {
     },
     opacity: [0, 0.8],
     zooms: [9, 16],
+    isLoading: false,
+  },
+  statistics: {
+    morningPeakSpeed: 0,
+    eveningPeakSpeed: 0,
+    dayAvgSpeed: 0,
+    speedTrend: [],
+    isLoading: false,
   },
 };
 
@@ -75,7 +85,7 @@ const heatmapReducer = (state, action) => {
         return {
           lng: location.lng,
           lat: location.lat,
-          count: parseFloat(location.avgSpeed.toFixed(2)),
+          count: +location.avgSpeed.toFixed(2),
         };
       });
 
@@ -89,19 +99,51 @@ const heatmapReducer = (state, action) => {
       };
     case FETCH_ALL_LOCATIONS_SPEED_FAILURE:
       // Switch off loading indicator
-      // And set data field to empty
       return {
         ...state,
-        dataSet: {
-          data: [],
-          max: state.heatmap.dataSet.max,
-        },
+        isLoading: false,
       };
     case ZOOM_END:
       // Lookup radius value corresponds to current zoom level
       return {
         ...state,
         radius: zoomToRadiusDataMaxValueMapping[action.payload.zoom].radius,
+      };
+    default:
+      return state;
+  }
+};
+
+const statisticsReducer = (state, action) => {
+  switch (action.type) {
+    case FETCH_ALL_STATISTICS_REQUEST:
+      // Switch on loading indicator
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case FETCH_ALL_STATISTICS_SUCCEED:
+      // Compose data for statistics
+      const speedTrend = action.payload.speedTrend.map((trend) => {
+        return {
+          time: +(`${trend.opTime}000`), // Convert to standard timestamp format
+          speed: +trend.avgSpeed.toFixed(2),
+        };
+      });
+
+      return {
+        ...state,
+        morningPeakSpeed: +action.payload.morningPeakSpeed.toFixed(2),
+        eveningPeakSpeed: +action.payload.eveningPeakSpeed.toFixed(2),
+        dayAvgSpeed: +action.payload.dayAvgSpeed.toFixed(2),
+        speedTrend,
+        isLoading: false,
+      };
+    case FETCH_ALL_STATISTICS_FAILURE:
+      // Switch off loading indicator
+      return {
+        ...state,
+        isLoading: false,
       };
     default:
       return state;
@@ -124,6 +166,13 @@ export default function Reducer(state=initialState, action) {
       return {
         ...state,
         heatmap: heatmapReducer(state.heatmap, action),
+      };
+    case FETCH_ALL_STATISTICS_REQUEST:
+    case FETCH_ALL_STATISTICS_SUCCEED:
+    case FETCH_ALL_STATISTICS_FAILURE:
+      return {
+        ...state,
+        statistics: statisticsReducer(state.statistics, action),
       };
     default:
       return state;

@@ -10,6 +10,7 @@ import {connect} from 'react-redux';
 import Component from './component';
 import {
   fetchAllLocationsSpeedRequest,
+  fetchAllStatisticsRequest,
   zoomEnd,
 } from './actions';
 
@@ -17,6 +18,10 @@ const mapStateToProps = (state, ownProps) => {
   return {
     cityCode: state.app.cityCode,
     heatmapOptions: state.speed.heatmap,
+    morningPeakSpeed: state.speed.statistics.morningPeakSpeed,
+    eveningPeakSpeed: state.speed.statistics.eveningPeakSpeed,
+    dayAvgSpeed: state.speed.statistics.dayAvgSpeed,
+    speedTrend: state.speed.statistics.speedTrend,
   };
 };
 
@@ -27,6 +32,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     },
     zoomEndHandler: (payload) => {
       dispatch(zoomEnd(payload));
+    },
+    fetchAllStatisticsRequest: (payload) => {
+      dispatch(fetchAllStatisticsRequest(payload));
     },
   };
 };

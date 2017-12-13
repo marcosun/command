@@ -106,6 +106,26 @@ class Component extends React.Component {
     this.props.fetchAllStatisticsRequest({
       cityCode: this.props.cityCode,
     });
+
+    // Auto refresh every 30 seconds
+    this.timer = window.setInterval(() => {
+      // Call saga to fetch heat map data api
+      this.props.fetchAllLocationsSpeedRequest({
+        cityCode: this.props.cityCode,
+      });
+
+      // Call saga to fetch statistics api
+      this.props.fetchAllStatisticsRequest({
+        cityCode: this.props.cityCode,
+      });
+    }, 30000);
+  }
+
+  /**
+   * Clear auto refresh process
+   */
+  componentWillUnmount() {
+    window.clearInterval(this.timer);
   }
 
   /**

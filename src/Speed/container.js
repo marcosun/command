@@ -44,7 +44,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
  */
 @connect(mapStateToProps, mapDispatchToProps)
 class Container extends Component {
-
 }
 
 /**

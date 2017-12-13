@@ -18,6 +18,8 @@ import Heatmap from 'react-amap-plugin-heatmap';
 import Echarts from './components/echarts';
 import SpeedBoard from './components/speedBoard';
 
+import movingPictures from './movingPictures.gif';
+
 const styles = (theme) => ({
   root: {
     position: 'relative',
@@ -27,6 +29,13 @@ const styles = (theme) => ({
   mapContainer: {
     width: '100vw',
     height: '100vh',
+  },
+  gif: {
+    position: 'absolute',
+    top: '100px',
+    left: '50px',
+    width: '200px',
+    height: '200px',
   },
   statisticsBoard: {
     position: 'absolute',
@@ -159,6 +168,7 @@ class Component extends React.Component {
             <Heatmap {...heatmapOptions} />
           </ReactAMap>
         </div>
+        <img className={classes.gif} src={movingPictures} />
         <div className={classes.statisticsBoard}>
           <SpeedBoard title='早高峰运送速度' value={morningPeakSpeed} />
           <SpeedBoard title='晚高峰运送速度' value={eveningPeakSpeed} />

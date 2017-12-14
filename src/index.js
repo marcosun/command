@@ -43,16 +43,18 @@ const historyMiddleware = routerMiddleware(history);
  */
 const sagaMiddleware = createSagaMiddleware();
 
+// Create middlewares
+// Disable logger middlewares in production mode
+let middlewares = [historyMiddleware, sagaMiddleware];
+if (process.env.NODE_ENV !== 'production') {
+  middlewares = [...middlewares, logger];
+}
 /**
  * Represents the integration of redux store and react router
  * Logger must be the last middleware in chain,
  * otherwise it will log thunk and promise, not actual actions
  */
-const store = configureStore(applyMiddleware(
-  historyMiddleware,
-  sagaMiddleware,
-  logger
-));
+const store = configureStore(applyMiddleware(...middlewares));
 
 let sagaTask = sagaMiddleware.run(rootSaga);
 

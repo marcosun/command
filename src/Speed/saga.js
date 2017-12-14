@@ -29,7 +29,9 @@ export function* fetchAllLocationsSpeedRequest({payload: {cityCode}}) {
   try {
     const request = { // Http request options
       method: 'GET',
-      url: 'http://dev.ibus.org.cn:8083/v1/opstat/getPointAvgSpeed',
+      // url: 'http://dev.ibus.org.cn:8083/v1/opstat/getPointAvgSpeed',
+      // Api from Big Screen team
+      url: 'http://101.37.105.67:3000/api/dataIndexResult/5954a49618dee0c99ac446b1',
       params: {
         city: cityCode,
       },

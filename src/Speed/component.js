@@ -127,7 +127,7 @@ class Component extends React.Component {
       this.props.fetchAllStatisticsRequest({
         cityCode: this.props.cityCode,
       });
-    }, 30000);
+    }, 60000);
   }
 
   /**

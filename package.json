@@ -1,7 +1,7 @@
 {
-  "name": "react-seed",
+  "name": "command",
   "version": "0.0.1",
-  "description": "a scaffold for building React apps with ES7 and webpack",
+  "description": "data visualisation",
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --config ./config/webpack.dev.js",
@@ -13,12 +13,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@gitlab05.dtdream.com:marco/react-seed.git"
+    "url": "git@github.com:marcosun/command.git"
   },
   "keywords": [
     "react",
-    "seed",
-    "pubtrans"
   ],
   "author": "Marco",
   "license": "UNLICENSED",
